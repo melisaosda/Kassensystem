@@ -10,7 +10,16 @@ public class Produkt
 	
 	public Produkt(String pEAN)
 	{
-		pEAN = EAN;
+		EAN = pEAN;
+	}
+
+	public Produkt(String pEAN, String pBezeichnung, double pNettopreis, String pBasiseinheit, int pUmsatzsteuersatz)
+	{
+		EAN = pEAN;
+		bezeichnung = pBezeichnung;
+		nettopreis = pNettopreis;
+		basiseinheit = pBasiseinheit;
+		umsatzsteuersatz = pUmsatzsteuersatz;
 	}
 	
 	public String getEAN()
