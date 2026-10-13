@@ -6,13 +6,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import datenspeicherung.db.ProduktSpeicher;
+import fachkonzept.Bon;
 import fachkonzept.Position;
 import fachkonzept.Produkt;
 
@@ -91,41 +90,10 @@ public class Steuerung
 		{
 			throw new IllegalStateException("Der Bon kann erst nach der Zahlung gedruckt werden.");
 		}
+		Bon bon = new Bon(positionen, gegeben);
 		Files.createDirectories(Paths.get(BON_ORDNER));
-		Date jetzt = new Date();
-		Path datei = Paths.get(BON_ORDNER, "bon_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(jetzt) + ".txt");
-		Files.write(datei, erstelleBon(jetzt).getBytes(StandardCharsets.UTF_8));
+		Path datei = Paths.get(BON_ORDNER, bon.getDateiname());
+		Files.write(datei, bon.erstelleText().getBytes(StandardCharsets.UTF_8));
 		return datei;
-	}
-
-	private String erstelleBon(Date zeit)
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.append("KASSENBON\n");
-		sb.append(new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(zeit)).append("\n");
-		sb.append("------------------------------------------\n");
-		double netto = 0;
-		double steuer = 0;
-		for (Position p : positionen)
-		{
-			if (p.istGeloescht())
-			{
-				continue;
-			}
-			Produkt produkt = p.getProdukt();
-			sb.append(String.format(Locale.GERMANY, "%s\n", produkt.getBezeichnung()));
-			sb.append(String.format(Locale.GERMANY, "  %d x %.2f EUR (netto, %d%% MwSt) %18.2f EUR\n", p.getMenge(),
-					produkt.getNettoPreis(), produkt.getUmsatzsteuersatz(), p.getBrutto()));
-			netto += p.getNetto();
-			steuer += p.getSteuer();
-		}
-		sb.append("------------------------------------------\n");
-		sb.append(String.format(Locale.GERMANY, "Netto:     %10.2f EUR\n", netto));
-		sb.append(String.format(Locale.GERMANY, "MwSt:      %10.2f EUR\n", steuer));
-		sb.append(String.format(Locale.GERMANY, "Gesamt:    %10.2f EUR\n", getGesamtbetrag()));
-		sb.append(String.format(Locale.GERMANY, "Gegeben:   %10.2f EUR\n", gegeben));
-		sb.append(String.format(Locale.GERMANY, "Rueckgeld: %10.2f EUR\n", gegeben - getGesamtbetrag()));
-		sb.append("\nVielen Dank fuer Ihren Einkauf!\n");
-		return sb.toString();
 	}
 }
