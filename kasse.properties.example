@@ -1,0 +1,7 @@
+# USB-Geldschublade, die in Windows als COM-Port erscheint (Geraete-Manager > Anschluesse (COM & LPT)).
+# schublade.com leer lassen = Simulationsmodus, es wird keine Schublade geoeffnet.
+schublade.com=
+# Baudrate laut Handbuch der Schublade (oft 9600)
+schublade.baud=9600
+# Oeffnen-Befehl als Hex-Bytes; leer = ESC/POS-Standard "1B 70 00 19 FA"
+schublade.befehl=
