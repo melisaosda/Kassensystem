@@ -12,6 +12,11 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import java.awt.BorderLayout;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Benutzerschnittstelle extends JFrame
 {
@@ -23,10 +28,23 @@ public class Benutzerschnittstelle extends JFrame
 	private JButton btnSuchleiste;
 	private JTextField txtSuchleiste;
 	private JLabel lblSuchleiste;
-	private JPanel produktBild;
 	private JTable tblProdukt;
 	private JTable tblPosition;
 	private JButton btnPosition;
+	private JPanel pnlPositionen;
+	private JPanel pnlTransaktion;
+	private JButton btnZuruecksetzen;
+	private JButton btnZahlung;
+	private JButton btnAbschliessen;
+	private JTextField txtGezahlt;
+	private JLabel lblGesamtbetrag;
+	private JLabel lblGezahlt;
+	private JLabel lblRueckgeld;
+	private JTextField txtGesamtbetrag;
+	private JTextField txtRueckgeld;
+	private JScrollPane scrollPane;
+	private JTable tblPositionen;
+	private JButton btnStornieren;
 
 	/**
 	 * Launch the application.
@@ -57,7 +75,7 @@ public class Benutzerschnittstelle extends JFrame
 	{
 		setTitle("Kassensystem");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1094, 516);
+		setBounds(100, 100, 1095, 685);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -75,11 +93,6 @@ public class Benutzerschnittstelle extends JFrame
 		pnlProdukt.add(pnlProdukt2);
 		pnlProdukt2.setLayout(null);
 		
-		produktBild = new JPanel();
-		produktBild.setBorder(new LineBorder(new Color(128, 128, 128)));
-		produktBild.setBounds(10, 10, 153, 133);
-		pnlProdukt2.add(produktBild);
-		
 		tblProdukt = new JTable();
 		tblProdukt.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -96,7 +109,7 @@ public class Benutzerschnittstelle extends JFrame
 				return columnEditables[column];
 			}
 		});
-		tblProdukt.setBounds(173, 10, 523, 133);
+		tblProdukt.setBounds(10, 10, 686, 133);
 		pnlProdukt2.add(tblProdukt);
 		
 		tblPosition = new JTable();
@@ -119,6 +132,10 @@ public class Benutzerschnittstelle extends JFrame
 		pnlProdukt2.add(tblPosition);
 		
 		btnPosition = new JButton("Position buchen");
+		btnPosition.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnPosition.setBounds(706, 99, 324, 44);
 		pnlProdukt2.add(btnPosition);
 		
@@ -135,6 +152,83 @@ public class Benutzerschnittstelle extends JFrame
 		lblSuchleiste.setLabelFor(txtSuchleiste);
 		lblSuchleiste.setBounds(10, 10, 177, 13);
 		pnlProdukt.add(lblSuchleiste);
+		
+		pnlPositionen = new JPanel();
+		pnlPositionen.setBorder(new LineBorder(new Color(0, 0, 0)));
+		pnlPositionen.setBounds(10, 251, 1060, 218);
+		contentPane.add(pnlPositionen);
+		pnlPositionen.setLayout(new BorderLayout(0, 0));
+		
+		scrollPane = new JScrollPane();
+		pnlPositionen.add(scrollPane, BorderLayout.CENTER);
+		
+		btnStornieren = new JButton("Position stornieren");
+		btnStornieren.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		scrollPane.setViewportView(btnStornieren);
+		
+		tblPositionen = new JTable();
+		tblPositionen.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tblPositionen.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Produktnummer", "Bezeichnung", "Nettopreis", "USt.", "Menge", "Betrag"
+			}
+		));
+		pnlPositionen.add(tblPositionen, BorderLayout.NORTH);
+		
+		pnlTransaktion = new JPanel();
+		pnlTransaktion.setBorder(new LineBorder(new Color(0, 0, 0)));
+		pnlTransaktion.setBounds(10, 479, 1061, 159);
+		contentPane.add(pnlTransaktion);
+		pnlTransaktion.setLayout(null);
+		
+		btnZuruecksetzen = new JButton("Transaktion zurücksetzen");
+		btnZuruecksetzen.setBounds(723, 10, 328, 38);
+		pnlTransaktion.add(btnZuruecksetzen);
+		
+		btnZahlung = new JButton("Zahlung erfassen");
+		btnZahlung.setBounds(723, 58, 328, 38);
+		pnlTransaktion.add(btnZahlung);
+		
+		btnAbschliessen = new JButton("Transaktion abschließen");
+		btnAbschliessen.setBounds(723, 106, 328, 43);
+		pnlTransaktion.add(btnAbschliessen);
+		
+		txtGezahlt = new JTextField();
+		txtGezahlt.setBounds(186, 68, 96, 19);
+		pnlTransaktion.add(txtGezahlt);
+		txtGezahlt.setColumns(10);
+		
+		lblGesamtbetrag = new JLabel("Gesamtbetrag:");
+		lblGesamtbetrag.setBounds(20, 14, 145, 31);
+		pnlTransaktion.add(lblGesamtbetrag);
+		
+		lblGezahlt = new JLabel("Gezahlt:");
+		lblGezahlt.setLabelFor(txtGezahlt);
+		lblGezahlt.setBounds(20, 65, 111, 25);
+		pnlTransaktion.add(lblGezahlt);
+		
+		lblRueckgeld = new JLabel("Rückgeld:");
+		lblRueckgeld.setBounds(20, 115, 111, 25);
+		pnlTransaktion.add(lblRueckgeld);
+		
+		txtGesamtbetrag = new JTextField();
+		lblGesamtbetrag.setLabelFor(txtGesamtbetrag);
+		txtGesamtbetrag.setEditable(false);
+		txtGesamtbetrag.setColumns(10);
+		txtGesamtbetrag.setBounds(186, 20, 96, 19);
+		pnlTransaktion.add(txtGesamtbetrag);
+		
+		txtRueckgeld = new JTextField();
+		lblRueckgeld.setLabelFor(txtRueckgeld);
+		txtRueckgeld.setEditable(false);
+		txtRueckgeld.setColumns(10);
+		txtRueckgeld.setBounds(186, 118, 96, 19);
+		pnlTransaktion.add(txtRueckgeld);
 
 	}
 }
