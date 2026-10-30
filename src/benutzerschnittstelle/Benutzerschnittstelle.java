@@ -53,14 +53,14 @@ public class Benutzerschnittstelle extends JFrame
 	private JLabel lblRueckgeld;
 	private JTextField txtGesamtbetrag;
 	private JTextField txtRueckgeld;
-	private JScrollPane scrollPane;
-	private JTable tblPositionen;
-	private JButton btnStornieren;
 	private JLabel lblGeldschublade;
 	private Steuerung steuerung;
 	private Produkt gefundenesProdukt;
 	private List<Position> angezeigtePositionen = new ArrayList<>();
 	private boolean aktualisiertGerade;
+	private JTable tblPositionen;
+	private JTable tblPosPosition;
+	private JButton btnStornieren;
 
 	/**
 	 * Launch the application.
@@ -181,29 +181,38 @@ public class Benutzerschnittstelle extends JFrame
 		pnlPositionen.setBorder(new LineBorder(new Color(0, 0, 0)));
 		pnlPositionen.setBounds(10, 251, 1060, 218);
 		contentPane.add(pnlPositionen);
-		pnlPositionen.setLayout(new BorderLayout(0, 0));
-		
-		scrollPane = new JScrollPane();
-		pnlPositionen.add(scrollPane, BorderLayout.CENTER);
-		
-		btnStornieren = new JButton("Position stornieren");
-		btnStornieren.addActionListener(e -> positionStornieren());
-		scrollPane.setViewportView(btnStornieren);
+		pnlPositionen.setLayout(null);
+		JPanel pnlTabelle = new JPanel();
+		pnlTabelle.setBorder(new LineBorder(new Color(0, 0, 0)));
+		pnlTabelle.setBounds(10, 10, 1040, 113);
+		pnlPositionen.add(pnlTabelle);
+		pnlTabelle.setLayout(null);
 		
 		tblPositionen = new JTable();
-		tblPositionen.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tblPositionen.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
-				"Produktnummer", "Bezeichnung", "Nettopreis", "USt.", "Menge", "Betrag"
+				"Produktnummer", "Bezeichnung", "Nettopreis", "USt."
 			}
 		));
-		tblPositionen.setDefaultEditor(Object.class, null);
-		JPanel pnlTabelle = new JPanel(new BorderLayout());
-		pnlTabelle.add(tblPositionen.getTableHeader(), BorderLayout.NORTH);
-		pnlTabelle.add(tblPositionen, BorderLayout.CENTER);
-		pnlPositionen.add(pnlTabelle, BorderLayout.NORTH);
+		tblPositionen.setBounds(10, 10, 686, 93);
+		pnlTabelle.add(tblPositionen);
+		
+		tblPosPosition = new JTable();
+		tblPosPosition.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Menge", "Betrag"
+			}
+		));
+		tblPosPosition.setBounds(706, 10, 324, 50);
+		pnlTabelle.add(tblPosPosition);
+		
+		btnStornieren = new JButton("Position stornieren");
+		btnStornieren.setBounds(704, 68, 326, 35);
+		pnlTabelle.add(btnStornieren);
 		
 		pnlTransaktion = new JPanel();
 		pnlTransaktion.setBorder(new LineBorder(new Color(0, 0, 0)));
